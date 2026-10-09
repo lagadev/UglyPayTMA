@@ -15,6 +15,10 @@ export default {
     const method = request.method;
     if (method === "OPTIONS") return new Response(null, { headers: corsHeaders() });
 
+    // ---- static files (index.html, pay.html, docs.html, css, js, assets) ----
+    // run_worker_first = true হলে সব request এখানে আসে, তাই /api ছাড়া সব ASSETS-এ পাঠাও
+    if (!pathname.startsWith("/api/")) return env.ASSETS.fetch(request);
+
     try {
       if (pathname === "/api/config" && method === "GET") return json(siteConfig(env), 200);
       if (pathname === "/api/health") return json({ ok: true, time: Date.now() }, 200);
@@ -40,6 +44,7 @@ export default {
 
       return json({ error: "Not found." }, 404);
     } catch (err) {
+      console.error("Worker error:", pathname, err && err.stack ? err.stack : err);
       return json({ error: "সার্ভারে সমস্যা হয়েছে।" }, 500);
     }
   },
