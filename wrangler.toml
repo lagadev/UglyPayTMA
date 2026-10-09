@@ -11,7 +11,7 @@ run_worker_first = ["/api/*"]
 [[d1_databases]]
 binding = "DB"
 database_name = "paylink-db"
-database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+database_id = "ff70be73-57c2-472a-9284-0b9ea0bb537f"
 
 # Public, non-secret settings. BOT_TOKEN is a SECRET — never put it here:
 #   wrangler secret put BOT_TOKEN
