@@ -1,0 +1,14 @@
+{
+  "name": "paylink",
+  "version": "3.0.0",
+  "description": "PayLink TMA edition — Telegram Mini App payment links for bKash/Nagad/Rocket/Upay on Cloudflare Workers + D1. No admin, no signup/login.",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:apply:remote": "wrangler d1 execute paylink-db --remote --file=./database/schema.sql",
+    "secret:bot-token": "wrangler secret put BOT_TOKEN",
+    "tail": "wrangler tail"
+  },
+  "devDependencies": { "wrangler": "^3.90.0" }
+}

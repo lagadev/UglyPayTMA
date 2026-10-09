@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>PayLink</title>
+<link rel="stylesheet" href="/css/style.css" />
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+<div class="page" id="blocked" style="display:none; text-align:center; padding-top:90px;">
+  <div class="pill gold" style="margin-bottom:16px;">টেলিগ্রাম প্রয়োজন</div>
+  <h1 style="font-size:20px;">এটি একটি Telegram Mini App</h1>
+  <p style="color:var(--ink-soft); font-size:13.5px; line-height:1.7; margin-top:10px;">সাইন আপ বা লগইন লাগে না — আপনার বটের Mini App বাটন থেকে খুললেই আপনার টেলিগ্রাম অ্যাকাউন্ট দিয়ে নিজে থেকে চালু হয়ে যাবে।</p>
+  <p style="margin-top:18px;"><a class="btn btn-ghost" href="/docs.html">ডেভেলপার ডকস</a></p>
+</div>
+
+<div class="page" id="app" style="display:none;">
+  <div class="topbar">
+    <div class="who">
+      <div class="avatar" id="avatar">·</div>
+      <div><div class="name" id="whoName">—</div><div class="sub"><span class="dot"></span>আপনার নিজস্ব পেমেন্ট পেজ</div></div>
+    </div>
+  </div>
+
+  <!-- ===== tab: methods ===== -->
+  <section class="tabpane show" id="tab-methods">
+    <p class="hint" style="margin:0 0 12px;">নিজের নম্বর বসান, তারপর চালু করুন। কাস্টমারের টাকা সরাসরি আপনার নম্বরে যাবে।</p>
+    <div class="stack" id="methodCards"></div>
+  </section>
+
+  <!-- ===== tab: links ===== -->
+  <section class="tabpane" id="tab-links">
+    <div class="mcard">
+      <h3>নতুন পেমেন্ট লিংক</h3>
+      <div class="field noicon"><label for="amt">পরিমাণ (৳)</label><input id="amt" type="number" inputmode="decimal" min="1" placeholder="500" /></div>
+      <div class="field noicon"><label for="ref">রেফারেন্স (ঐচ্ছিক)</label><input id="ref" maxlength="128" placeholder="যেমনঃ order-1042" /></div>
+      <button class="btn btn-primary btn-block" id="makeLink">লিংক তৈরি করুন</button>
+      <div class="linkbox" id="linkBox">
+        <div class="secret"><code id="linkUrl"></code><button id="copyLink">Copy</button></div>
+        <a class="btn btn-ghost btn-block" id="openLink" target="_blank" rel="noopener" style="margin-top:10px;">পেজটি খুলুন</a>
+      </div>
+    </div>
+    <h3 style="font-size:14px; margin:20px 0 10px;">সাম্প্রতিক ইনভয়েস</h3>
+    <div class="list-card" id="invList"><div class="empty">লোড হচ্ছে…</div></div>
+  </section>
+
+  <!-- ===== tab: SMS app + API ===== -->
+  <section class="tabpane" id="tab-setup">
+    <div class="stack">
+      <div class="mcard">
+        <h3 id="hSms"></h3>
+        <p class="sub">পেমেন্ট রিসিভ করা ফোনে এই অ্যাপটি ইনস্টল করুন। এটি শুধু bKash/Nagad/Rocket/Upay-এর SMS আপনার সার্ভারে পাঠায়, বাকি কোনো SMS নয়।</p>
+        <a class="btn btn-primary btn-block" id="apkBtn" href="#" rel="noopener"></a>
+        <div class="hint" id="apkMissing" style="display:none;">APK লিংক সেট করা নেই (wrangler.toml → APK_URL)।</div>
+        <ol>
+          <li>APK ডাউনলোড করে ইনস্টল করুন (অজানা উৎস থেকে ইনস্টলের অনুমতি লাগতে পারে)।</li>
+          <li>অ্যাপ খুলে নিচের Server URL ও Token বসিয়ে সেভ করুন।</li>
+          <li>SMS পারমিশন দিন। Android ১৩+ হলে App info → ⋮ → "Allow restricted settings" দিতে হতে পারে।</li>
+        </ol>
+        <div style="margin-top:14px; font-size:12px; font-weight:700;">Server URL</div>
+        <div class="secret"><code id="srvUrl"></code><button data-copy="srvUrl">Copy</button></div>
+        <div style="margin-top:12px; font-size:12px; font-weight:700;">SMS Token</div>
+        <div class="secret"><code id="ingestTok"></code><button id="showIngest">দেখুন</button><button data-copy="ingestTok">Copy</button></div>
+        <button class="btn btn-danger-soft btn-block" id="regenIngest" style="margin-top:12px;">নতুন Token তৈরি করুন</button>
+      </div>
+
+      <div class="mcard">
+        <h3 id="hApi"></h3>
+        <p class="sub">নিজের ওয়েবসাইট বা বট থেকে ইনভয়েস তৈরির জন্য। এটি গোপন রাখুন।</p>
+        <div class="secret"><code id="apiKey"></code><button id="showApi">দেখুন</button><button data-copy="apiKey">Copy</button></div>
+        <button class="btn btn-danger-soft btn-block" id="regenApi" style="margin-top:12px;">নতুন API Key তৈরি করুন</button>
+        <a class="btn btn-ghost btn-block" href="/docs.html" style="margin-top:10px;">ডেভেলপার ডকস</a>
+      </div>
+    </div>
+  </section>
+
+  <nav class="tabs"><div class="inner" id="tabBar"></div></nav>
+</div>
+
+<script src="/js/app.js"></script>
+<script src="/js/tma.js"></script>
+</body>
+</html>
