@@ -5,16 +5,13 @@ compatibility_date = "2025-06-01"
 [assets]
 directory = "./public"
 binding = "ASSETS"
-run_worker_first = ["/api/*"]
+run_worker_first = true
 
-# wrangler d1 create paylink-db   ->  paste the returned id below
 [[d1_databases]]
 binding = "DB"
 database_name = "paylink-db"
 database_id = "ff70be73-57c2-472a-9284-0b9ea0bb537f"
 
-# Public, non-secret settings. BOT_TOKEN is a SECRET — never put it here:
-#   wrangler secret put BOT_TOKEN
 [vars]
 SITE_NAME = "PayLink"
 INVOICE_TTL_MINUTES = "15"
