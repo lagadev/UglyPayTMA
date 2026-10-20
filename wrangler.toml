@@ -15,5 +15,5 @@ database_id = "ff70be73-57c2-472a-9284-0b9ea0bb537f"
 [vars]
 SITE_NAME = "PayLink"
 INVOICE_TTL_MINUTES = "15"
-APK_URL = "https://github.com/lagadev/uglypayapk/releases/download/v1.0.0/app-debug.apk"
+APK_URL = "https://github.com/lagadev/uptmaa/releases/download/latest/UglyPaySMS.apk"
 SUPPORT_TELEGRAM = ""
