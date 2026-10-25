@@ -125,7 +125,19 @@
   PL.loadConfig().then(function (c) {
     cfg = c;
     var b = el("apkBtn");
-    if (c.apkUrl) { b.href = c.apkUrl; b.innerHTML = PL.icon("down") + " APK ডাউনলোড করুন"; }
+    if (c.apkUrl) {
+      b.href = c.apkUrl; b.innerHTML = PL.icon("down") + " APK ডাউনলোড করুন";
+      // Telegram-এর in-app WebView ফাইল ডাউনলোড আটকে দেয় → বাইরের ব্রাউজারে খুলি
+      b.addEventListener("click", function (e) {
+        e.preventDefault();
+        try {
+          if (tg.openLink) tg.openLink(c.apkUrl, { try_instant_view: false });
+          else window.open(c.apkUrl, "_blank");
+        } catch (err) { window.open(c.apkUrl, "_blank"); }
+      });
+      el("apkCopy").style.display = "block"; el("apkHint").style.display = "block";
+      el("apkCopy").addEventListener("click", function () { copy(c.apkUrl, el("apkCopy")); });
+    }
     else { b.style.display = "none"; el("apkMissing").style.display = "block"; }
   });
 
